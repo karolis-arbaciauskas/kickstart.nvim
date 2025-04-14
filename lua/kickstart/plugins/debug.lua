@@ -141,6 +141,15 @@ return {
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
     dap.listeners.before.event_exited['dapui_config'] = dapui.close
 
+    table.insert(dap.configurations.go, 1, {
+      type = 'delve',
+      name = 'Delve: Debug (Select File)',
+      request = 'launch',
+      program = function()
+        return vim.fn.input('Path to Go file or package: ', './cmd/', 'file')
+      end,
+    })
+
     -- Install golang specific config
     require('dap-go').setup {
       delve = {
