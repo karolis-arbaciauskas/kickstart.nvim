@@ -833,6 +833,7 @@ require('lazy').setup({
     event = 'VimEnter',
     version = '1.*',
     dependencies = {
+      'fang2hou/blink-copilot',
       -- Snippet Engine
       {
         'L3MON4D3/LuaSnip',
@@ -860,7 +861,6 @@ require('lazy').setup({
         opts = {},
       },
       'folke/lazydev.nvim',
-      'giuxtaposition/blink-cmp-copilot',
     },
     --- @module 'blink.cmp'
     --- @type blink.cmp.Config
@@ -908,8 +908,13 @@ require('lazy').setup({
       sources = {
         default = { 'copilot', 'lsp', 'path', 'snippets', 'lazydev' },
         providers = {
+          copilot = {
+            name = 'copilot',
+            module = 'blink-copilot',
+            score_offset = 100,
+            async = true,
+          },
           lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
-          copilot = { name = 'copilot', module = 'blink-cmp-copilot', score_offset = 100, async = true },
         },
       },
 
