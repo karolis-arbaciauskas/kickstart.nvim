@@ -1,4 +1,7 @@
-local on_attach = function(client, bufnr)
+local M = {}
+
+-- Custom on_attach: semantic token fallback
+local function custom_on_attach(client, bufnr)
   if not client.server_capabilities.semanticTokensProvider then
     local semantic = client.config.capabilities.textDocument.semanticTokens
     client.server_capabilities.semanticTokensProvider = {
@@ -12,14 +15,40 @@ local on_attach = function(client, bufnr)
   end
 end
 
-require('lspconfig').gopls.setup {
-  on_attach = on_attach,
-}
+M = {
+  -- Extend Kickstart's LSP config
+  {
+    'neovim/nvim-lspconfig',
+    opts = {
+      servers = {
+        gopls = {
+          -- Your custom attach logic (merged with Kickstart's)
+          on_attach = function(client, bufnr)
+            -- run your custom one
+            custom_on_attach(client, bufnr)
 
-return {
+            -- also run Kickstart's on_attach if it exists
+            local ks_attach = require('kickstart.plugins.lsp').on_attach
+            if ks_attach then
+              ks_attach(client, bufnr)
+            end
+          end,
+
+          -- you can place gopls settings here if needed:
+          -- settings = {
+          --   gopls = { analyses = { unusedparams = true } }
+          -- },
+        },
+      },
+    },
+  },
+
+  -- neotest-golang
   {
     'fredrikaverpil/neotest-golang',
   },
+
+  -- mini.icons overrides
   {
     'echasnovski/mini.icons',
     opts = {
@@ -31,20 +60,20 @@ return {
       },
     },
   },
+
+  -- neotest adapter hookup
   {
     'nvim-neotest/neotest',
     optional = true,
-    dependencies = {
-      'fredrikaverpil/neotest-golang',
-    },
+    dependencies = { 'fredrikaverpil/neotest-golang' },
     opts = {
       adapters = {
         ['neotest-golang'] = {
-          -- Here we can set options for neotest-golang, e.g.
-          -- go_test_args = { "-v", "-race", "-count=1", "-timeout=60s" },
-          dap_go_enabled = true, -- requires leoluz/nvim-dap-go
+          dap_go_enabled = true,
         },
       },
     },
   },
 }
+
+return M

@@ -715,7 +715,7 @@ require('lazy').setup({
             },
           },
         },
-        ruby_lsp = {},
+        -- ruby_lsp = {},
 
         -- pyright = {},
         -- rust_analyzer = {},

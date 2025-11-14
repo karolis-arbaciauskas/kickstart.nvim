@@ -27,7 +27,7 @@ return {
 
     -- Add your own debuggers here
     'leoluz/nvim-dap-go',
-    'suketa/nvim-dap-ruby',
+    -- 'suketa/nvim-dap-ruby',
   },
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -160,6 +160,6 @@ return {
     }
 
     -- Install ruby specific config
-    require('dap-ruby').setup()
+    -- require('dap-ruby').setup()
   end,
 }
