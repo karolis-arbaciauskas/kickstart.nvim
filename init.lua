@@ -102,7 +102,7 @@ vim.g.have_nerd_font = true
 vim.o.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
@@ -149,8 +149,8 @@ vim.o.splitbelow = true
 --  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
 --   See `:help lua-options`
 --   and `:help lua-options-guide`
-vim.o.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+-- vim.o.list = true
+-- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
 vim.o.inccommand = 'split'
@@ -589,10 +589,26 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
+        --
+        golangci_lint_ls = {
+          settings = {
+            golangci_lint_ls = {
+              command = { 'golangci-lint', 'run', '--out-format', 'json' },
+              -- You can customize your lint configuration here
+              -- For example, to specify a config file:
+              -- command = { "golangci-lint", "run", "--out-format", "json", "--config", "path/to/config" },
+
+              -- Automatically initialize the server when opening Go files
+              initializationOptions = {
+                enable = true,
+              },
+            },
+          },
+        },
         gopls = {
           settings = {
             gopls = {
-              gofumpt = true,
+              -- gofumpt = true,
               codelenses = {
                 gc_details = false,
                 generate = true,
@@ -626,7 +642,7 @@ require('lazy').setup({
             },
           },
         },
-        -- ruby_lsp = {},
+        ruby_lsp = {},
 
         -- pyright = {},
         -- rust_analyzer = {},
@@ -673,7 +689,7 @@ require('lazy').setup({
         'stylua', -- Used to format Lua code
         'prettierd',
         'goimports',
-        'gofumpt',
+        -- 'gofumpt',
         'gomodifytags',
         'impl',
       })
@@ -689,7 +705,7 @@ require('lazy').setup({
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            vim.lsp.config[server_name] = server
           end,
         },
       }
@@ -729,7 +745,8 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         yaml = { 'prettierd' },
-        go = { 'goimports', 'gofumpt' },
+        go = { 'goimports' },
+        -- go = { 'goimports', 'gofumpt' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
@@ -932,6 +949,7 @@ require('lazy').setup({
         'yaml',
         'vim',
         'vimdoc',
+        'proto', -- add proto here
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
