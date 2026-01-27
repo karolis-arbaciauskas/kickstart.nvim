@@ -4,7 +4,7 @@ return {
     'preservim/vimux',
   },
   setup = {
-    vim.cmd 'let test#strategy = "vimux"',
+    vim.cmd 'let test#strategy = "neovim_sticky"',
   },
   keys = {
     { '<leader>tt', '<cmd>TestFile<CR>', { desc = 'Test file' } },
