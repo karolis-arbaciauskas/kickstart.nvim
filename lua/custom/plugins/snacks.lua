@@ -36,13 +36,6 @@ return {
     },
     { '<leader>gb', '<cmd>Gitsigns blame<cr>', desc = 'Git blame' },
     {
-      '<leader>gs',
-      function()
-        Snacks.picker.git_status()
-      end,
-      desc = 'Git Status',
-    },
-    {
       '<leader>go',
       function()
         Snacks.gitbrowse()
@@ -50,7 +43,7 @@ return {
       desc = 'Git Browse',
     },
 
-    -- Picker: Search operations
+    -- Search operations
     {
       '<leader>sh',
       function()
@@ -112,21 +105,19 @@ return {
       function()
         Snacks.picker.recent()
       end,
-      desc = '[S]earch Recent Files ("." for repeat)',
+      desc = '[S]earch Recent Files',
+    },
+    {
+      '<leader>sc',
+      function()
+        Snacks.picker.commands()
+      end,
+      desc = '[S]earch [C]ommands',
     },
     {
       '<leader><leader>',
       function()
-        Snacks.picker.buffers {
-          win = {
-            input = {
-              keys = {
-                ['d'] = 'bufdelete',
-              },
-            },
-            list = { keys = { ['d'] = 'bufdelete' } },
-          },
-        }
+        Snacks.picker.buffers()
       end,
       desc = '[ ] Find existing buffers',
     },

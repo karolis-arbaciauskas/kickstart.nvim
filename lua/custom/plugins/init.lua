@@ -1,20 +1,14 @@
--- You can add your own plugins here or in other files in this directory!
---  I promise not to create any merge conflicts in this directory :)
---
--- See the kickstart.nvim README for more information
-
--- Resizing windows
-vim.keymap.set('n', '<A-h>', '<C-w>5<', { desc = 'Decrease window width' })
-vim.keymap.set('n', '<A-l>', '<C-w>5>', { desc = 'Increase window width' })
-vim.keymap.set('n', '<A-j>', '<C-w>1+', { desc = 'Increase window height' })
-vim.keymap.set('n', '<A-k>', '<C-w>1-', { desc = 'Decrease window height' })
-
--- Move lines up and down
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
-
--- Move lines left and right
-vim.keymap.set('v', '<', '<gv')
-vim.keymap.set('v', '>', '>gv')
-
-return {}
+-- Custom plugins configuration
+return {
+  require 'custom.plugins.lsp',
+  require 'custom.plugins.completion',
+  require 'custom.plugins.formatting',
+  require 'custom.plugins.treesitter',
+  require 'custom.plugins.snacks',
+  require 'custom.plugins.copilot',
+  require 'custom.plugins.go',
+  require 'custom.plugins.other',
+  require 'custom.plugins.vim_test',
+  require 'custom.plugins.tmux',
+  require 'custom.plugins.oil',
+}
