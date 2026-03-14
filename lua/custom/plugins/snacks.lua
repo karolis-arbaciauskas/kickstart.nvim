@@ -36,6 +36,13 @@ return {
     },
     { '<leader>gb', '<cmd>Gitsigns blame<cr>', desc = 'Git blame' },
     {
+      '<leader>gs',
+      function()
+        Snacks.picker.git_status()
+      end,
+      desc = 'Git Status',
+    },
+    {
       '<leader>go',
       function()
         Snacks.gitbrowse()
