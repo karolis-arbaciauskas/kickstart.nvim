@@ -19,6 +19,13 @@ return {
     -- Required dependency for nvim-dap-ui
     'nvim-neotest/nvim-nio',
 
+    {
+      'theHamsta/nvim-dap-virtual-text',
+      opts = {
+        commented = true,
+      },
+    },
+
     -- Installs the debug adapters for you
     'mason-org/mason.nvim',
     'jay-babu/mason-nvim-dap.nvim',
@@ -106,5 +113,11 @@ return {
         detached = vim.fn.has 'win32' == 0,
       },
     }
+
+    for _, config in ipairs(dap.configurations.go or {}) do
+      if config.name == 'Debug test' or config.name == 'Delve: Debug test' then
+        config.program = '${fileDirname}'
+      end
+    end
   end,
 }

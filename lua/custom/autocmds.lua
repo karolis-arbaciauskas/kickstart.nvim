@@ -8,24 +8,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Navigation with Snacks picker
     map('grd', function()
-      Snacks.picker.lsp_definitions()
+      require('snacks').picker.lsp_definitions()
     end, '[G]oto [D]efinition')
     map('grr', function()
-      Snacks.picker.lsp_references()
+      require('snacks').picker.lsp_references()
     end, '[G]oto [R]eferences')
     map('gri', function()
-      Snacks.picker.lsp_implementations()
+      require('snacks').picker.lsp_implementations()
     end, '[G]oto [I]mplementation')
     map('grt', function()
-      Snacks.picker.lsp_type_definitions()
+      require('snacks').picker.lsp_type_definitions()
     end, '[G]oto [T]ype Definition')
 
     -- Symbols
     map('gO', function()
-      Snacks.picker.lsp_symbols()
+      require('snacks').picker.lsp_symbols()
     end, 'Document Symbols')
     map('gW', function()
-      Snacks.picker.lsp_workspace_symbols()
+      require('snacks').picker.lsp_workspace_symbols()
     end, 'Workspace Symbols')
 
     -- Other LSP actions (not picker-based)
@@ -35,6 +35,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
   end,
   desc = 'LSP keymaps with Snacks picker',
+})
+
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = '*.go',
+  callback = function(event)
+    vim.api.nvim_buf_call(event.buf, function()
+      vim.lsp.buf.code_action {
+        context = { only = { 'source.organizeImports' }, diagnostics = {} },
+        apply = true,
+      }
+    end)
+  end,
+  desc = 'Organize Go imports before save',
 })
 
 -- Remove trailing whitespace on save
