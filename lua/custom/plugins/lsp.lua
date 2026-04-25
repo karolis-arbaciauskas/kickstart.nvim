@@ -20,7 +20,7 @@ return {
         end
 
         -- Document highlight on cursor hold
-        if client.supports_method 'textDocument/documentHighlight' then
+        if client:supports_method('textDocument/documentHighlight', event.buf) then
           local highlight_augroup = vim.api.nvim_create_augroup('custom-lsp-highlight', { clear = false })
           vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
             buffer = event.buf,
@@ -35,7 +35,7 @@ return {
         end
 
         -- Disable inlay hints
-        if client.supports_method 'textDocument/inlayHint' then
+        if client:supports_method('textDocument/inlayHint', event.buf) then
           vim.lsp.inlay_hint.enable(false, { bufnr = event.buf })
         end
       end,
