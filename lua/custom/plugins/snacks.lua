@@ -4,10 +4,13 @@ end, { desc = 'Delete Other Buffers' })
 
 return {
   'folke/snacks.nvim',
+  lazy = false,
   ---@diagnostic disable-next-line: undefined-doc-name
   ---@type snacks.Config
   opts = {
-    picker = {},
+    picker = {
+      ui_select = true,
+    },
     lazygit = {},
     gitbrowse = {},
   },
