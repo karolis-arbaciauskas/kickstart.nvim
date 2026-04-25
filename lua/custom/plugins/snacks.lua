@@ -14,6 +14,10 @@ return {
     lazygit = {},
     gitbrowse = {},
   },
+  config = function(_, opts)
+    require('snacks').setup(opts)
+    vim.ui.select = require('snacks.picker').select
+  end,
   keys = {
     -- Git operations
     {
