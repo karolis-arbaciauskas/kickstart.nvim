@@ -11,6 +11,10 @@ end
 
 map('n', '<leader>e', toggle_oil, { desc = 'Toggle Explorer' })
 
+-- Plugin updates (vim.pack)
+map('n', '<leader>pu', function() vim.pack.update() end, { desc = '[P]lugins: [U]pdate' })
+map('n', '<leader>ps', function() vim.pack.update(nil, { offline = true }) end, { desc = '[P]lugins: [S]tatus' })
+
 -- Move lines in visual mode
 map('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move line up' })
 map('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line down' })

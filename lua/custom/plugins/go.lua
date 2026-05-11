@@ -1,41 +1,21 @@
-return {
-  -- Mini.icons Go file icons
-  {
-    'nvim-mini/mini.icons',
-    opts = {
-      file = {
-        ['.go-version'] = { glyph = '', hl = 'MiniIconsBlue' },
-      },
-      filetype = {
-        gotmpl = { glyph = '󰟓', hl = 'MiniIconsGrey' },
-      },
-    },
-  },
+vim.pack.add {
+  'https://github.com/nvim-neotest/neotest',
+  'https://github.com/nvim-neotest/nvim-nio',
+  'https://github.com/nvim-lua/plenary.nvim',
+  'https://github.com/mfussenegger/nvim-dap',
+  'https://github.com/leoluz/nvim-dap-go',
+  'https://github.com/fredrikaverpil/neotest-golang',
+}
 
-  -- Neotest Go adapter for running/debugging tests through Neotest
-  {
-    'nvim-neotest/neotest',
-    dependencies = {
-      'nvim-neotest/nvim-nio',
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'mfussenegger/nvim-dap',
-      'leoluz/nvim-dap-go',
-      'fredrikaverpil/neotest-golang',
-    },
-    opts = function()
-      return {
-        adapters = {
-          require('neotest-golang') {
-            dap_mode = 'dap-go',
-            dap_go_opts = {
-              delve = {
-                detached = vim.fn.has 'win32' == 0,
-              },
-            },
-          },
+require('neotest').setup {
+  adapters = {
+    require 'neotest-golang' {
+      dap_mode = 'dap-go',
+      dap_go_opts = {
+        delve = {
+          detached = vim.fn.has 'win32' == 0,
         },
-      }
-    end,
+      },
+    },
   },
 }
