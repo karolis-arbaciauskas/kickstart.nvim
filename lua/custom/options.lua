@@ -7,6 +7,8 @@ vim.o.termguicolors = true
 -- No line wrap
 vim.o.wrap = false
 
+vim.o.colorcolumn = '100'
+
 -- Disable swap files
 vim.o.swapfile = false
 

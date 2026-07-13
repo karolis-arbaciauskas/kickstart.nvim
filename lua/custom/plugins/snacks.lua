@@ -1,12 +1,35 @@
 vim.pack.add { 'https://github.com/folke/snacks.nvim' }
 
 require('snacks').setup {
-  picker = { ui_select = true },
+  picker = {
+    ui_select = true,
+    win = {
+      input = {
+        keys = {
+          ['<c-u>'] = { 'preview_scroll_up', mode = { 'i', 'n' } },
+          ['<c-d>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
+        },
+      },
+      list = {
+        keys = {
+          ['<c-u>'] = 'preview_scroll_up',
+          ['<c-d>'] = 'preview_scroll_down',
+        },
+      },
+    },
+  },
   lazygit = {},
   gitbrowse = {},
 }
 
 vim.ui.select = require('snacks.picker').select
+
+-- Disable blink.cmp inside the Snacks picker prompt so <C-n>/<C-p> move the
+-- selection (like Telescope) instead of cycling completion items.
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'snacks_picker_input',
+  callback = function(ev) vim.b[ev.buf].completion = false end,
+})
 
 vim.api.nvim_create_user_command('DeleteOtherBuffers', function() require('snacks').bufdelete.other() end, { desc = 'Delete Other Buffers' })
 
