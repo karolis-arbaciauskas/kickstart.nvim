@@ -1,6 +1,14 @@
-vim.pack.add { 'https://github.com/mrjones2014/smart-splits.nvim' }
+vim.pack.add {
+  'https://github.com/smart-splits-nvim/smart-splits.nvim',
+  'https://github.com/smart-splits-nvim/backend-tmux',
+}
 
-require('smart-splits').setup {}
+-- v3 ships multiplexer support as separate backends. Without `mux.backend`,
+-- smart-splits only moves between Neovim windows and never reaches tmux.
+require('smart-splits').setup {
+  mux = { backend = 'smart-splits-backend-tmux' },
+  move = { at_edge = 'wrap' }, -- keep in sync with @smart-splits_at_edge in tmux
+}
 
 local map = vim.keymap.set
 -- Navigation (replaces vim-tmux-navigator)
