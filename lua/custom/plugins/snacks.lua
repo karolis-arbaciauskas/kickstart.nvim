@@ -1,19 +1,63 @@
 vim.pack.add { 'https://github.com/folke/snacks.nvim' }
 
+-- Hidden from file/grep pickers. `exclude` globs are handed to fd as `-E` and
+-- to ripgrep as `-g '!<glob>'`, so every pattern must work for both: ripgrep
+-- matches the whole path, hence the `**/` prefixes.
+local generated = {
+  '**/mocks/**',
+  '**/*.gen.go',
+  '**/*.pb.go',
+}
+
+-- Same files as git pathspecs, for the pickers that shell out to `git ls-files`
+-- and `git grep` instead of fd/ripgrep.
+local generated_pathspec = {
+  ':(exclude)**/mocks/**',
+  ':(exclude)**/*.gen.go',
+  ':(exclude)**/*.pb.go',
+}
+
+-- Toggles the excludes for the current picker only, so a single search can
+-- include generated files again.
+local function toggle_generated(picker)
+  local opts = picker.opts
+  local saved = opts._saved_generated
+  if saved then
+    opts.exclude, opts.cmd_args, opts.pathspec = saved.exclude, saved.cmd_args, saved.pathspec
+    opts._saved_generated = nil
+  else
+    opts._saved_generated = { exclude = opts.exclude, cmd_args = opts.cmd_args, pathspec = opts.pathspec }
+    opts.exclude, opts.cmd_args, opts.pathspec = {}, nil, nil
+  end
+  picker.list:set_target()
+  picker:find()
+end
+
 require('snacks').setup {
   picker = {
     ui_select = true,
+    sources = {
+      files = { exclude = generated },
+      grep = { exclude = generated },
+      grep_word = { exclude = generated },
+      grep_buffers = { exclude = generated },
+      git_files = { cmd_args = generated_pathspec },
+      git_grep = { pathspec = generated_pathspec },
+    },
+    actions = { toggle_generated = toggle_generated },
     win = {
       input = {
         keys = {
           ['<c-u>'] = { 'preview_scroll_up', mode = { 'i', 'n' } },
           ['<c-d>'] = { 'preview_scroll_down', mode = { 'i', 'n' } },
+          ['<a-g>'] = { 'toggle_generated', mode = { 'i', 'n' }, desc = 'toggle generated/mocks' },
         },
       },
       list = {
         keys = {
           ['<c-u>'] = 'preview_scroll_up',
           ['<c-d>'] = 'preview_scroll_down',
+          ['<a-g>'] = 'toggle_generated',
         },
       },
     },
