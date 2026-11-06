@@ -3,10 +3,10 @@ vim.pack.add {
   'https://github.com/smart-splits-nvim/backend-tmux',
 }
 
--- v3 ships multiplexer support as separate backends. Without `mux.backend`,
--- smart-splits only moves between Neovim windows and never reaches tmux.
+-- `mux.backend` is configured by the chezmoi overlay in after/plugin/herdr.lua,
+-- which lists the herdr backend ahead of tmux. Configuring a backend here would
+-- resolve the backend during startup, before the overlay is sourced.
 require('smart-splits').setup {
-  mux = { backend = 'smart-splits-backend-tmux' },
   move = { at_edge = 'wrap' }, -- keep in sync with @smart-splits_at_edge in tmux
 }
 
